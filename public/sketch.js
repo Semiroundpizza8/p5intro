@@ -86,3 +86,24 @@
 // }
 
 // var myp5 = new p5(songFunction);
+
+//----------------VISUALIZATION FUNCTION-----------------
+
+var audioFunc = (proc) => {
+  var mic;
+
+  proc.setup = () => {
+    proc.createCanvas(window.innerWidth, window.innerHeight)
+    mic = new p5.AudioIn();
+    mic.start();
+
+  }
+
+  proc.draw = () => {
+    proc.background(0);
+    var vol = mic.getLevel();
+    proc.ellipse(window.innerWidth/2, window.innerHeight/2, window.innerWidth, vol * 200);
+  }
+}
+
+var myp5 = new p5(audioFunc);
