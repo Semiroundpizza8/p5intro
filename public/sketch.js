@@ -21,16 +21,17 @@
 
 // var myp5 = new p5(s);
 
-var song = function (p) {
+var songFunction = function (p) {
   
-    var songmp3;
+    var song;
     var sliderVol;
     var sliderRate;
     var sliderPan;
     var button;
+    var jumpButton;
 
     p.preload = () => {
-      songmp3 = p.loadSound("song.mp3");
+      song = p.loadSound("song.mp3");
     }
   
     p.setup = () => { //Run once
@@ -40,20 +41,34 @@ var song = function (p) {
       sliderPan = p.createSlider(-1, 1, 0, 0.01);
       button = p.createButton("PLAY/PAUSE");
       button.mousePressed(p.togglePlaying);
+      jumpButton = p.createButton("jump");
+      jumpButton.mousePressed(p.jumpSong);
+
+      song.addCue(3, p.makeCircle);
     }
   
+    p.makeCircle = () => {
+      song.pause();
+    }
+
+    p.jumpSong = () => {
+      var len = song.duration();
+      song.jump(len / 2);
+    }
+
     p.togglePlaying = () => {
-      !songmp3.isPlaying()
-      ? songmp3.play()
-      : songmp3.stop()
+      !song.isPlaying()
+      ? song.play()
+      : song.stop()
     }
 
     p.draw = () =>  { //Run in a loop
-      p.background(255 - sliderVol.value() * 255 );
-      songmp3.setVolume(sliderVol.value());
-      songmp3.pan(sliderPan.value());
-      songmp3.rate(sliderRate.value());
+      let colorAlg = song.currentTime()*4 * 255 / song.duration();
+      p.background(colorAlg, colorAlg, 0);
+      song.setVolume(sliderVol.value());
+      song.pan(sliderPan.value());
+      song.rate(sliderRate.value());
     }
   }
   
-  var myp5 = new p5(song);
+  var myp5 = new p5(songFunction);
