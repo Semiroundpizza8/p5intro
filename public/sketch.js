@@ -29,19 +29,26 @@ var song = function (p) {
     var sliderPan;
     var button;
 
-    p.preload = function() {
+    p.preload = () => {
       songmp3 = p.loadSound("song.mp3");
     }
   
-    p.setup = function() { //Run once
+    p.setup = () => { //Run once
       p.createCanvas(400, 400);
       sliderVol = p.createSlider(0, 1, 0.5, 0.01);
       sliderRate = p.createSlider(0.1, 1.5, 1, 0.01);
       sliderPan = p.createSlider(-1, 1, 0, 0.01);
-      songmp3.play();
+      button = p.createButton("PLAY/PAUSE");
+      button.mousePressed(p.togglePlaying);
     }
   
-    p.draw = function() { //Run in a loop
+    p.togglePlaying = () => {
+      !songmp3.isPlaying()
+      ? songmp3.play()
+      : songmp3.stop()
+    }
+
+    p.draw = () =>  { //Run in a loop
       p.background(255 - sliderVol.value() * 255 );
       songmp3.setVolume(sliderVol.value());
       songmp3.pan(sliderPan.value());
