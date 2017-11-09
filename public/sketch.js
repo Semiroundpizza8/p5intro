@@ -1,4 +1,4 @@
-//----------------EXAMPLE FUNCTION-----------------
+// // ----------------EXAMPLE FUNCTION-----------------
 // var s = function (p) {
 
 //   var x = 0
@@ -24,83 +24,83 @@
 
 
 //----------------SONG FUNCTION-----------------
-var songFunction = function (p) {
+// var songFunction = function (p) {
 
-  var song;
-  var sliderVol;
-  var sliderRate;
-  var sliderPan;
-  var button;
-  var jumpButton;
-  var amp;
-  var width;
-  var height;
-  var x = 0;
+//   var song;
+//   var sliderVol;
+//   var sliderRate;
+//   var sliderPan;
+//   var button;
+//   var jumpButton;
+//   var amp;
+//   var width;
+//   var height;
+//   var x = 0;
 
-  p.setup = () => { //Run once
-    width = window.innerWidth;
-    height = window.innerWidth;
-    p.createCanvas(width, height);
-    song = p.loadSound('Paradise.mp3', p.loaded());
-    // song = p.loadSound('song.mp3', p.loaded());
-    amp = new p5.Amplitude();
-    console.log(amp);
-  }
+//   p.setup = () => { //Run once
+//     width = window.innerWidth;
+//     height = window.innerWidth;
+//     p.createCanvas(width, height);
+//     song = p.loadSound('Paradise.mp3', p.loaded());
+//     // song = p.loadSound('song.mp3', p.loaded());
+//     amp = new p5.Amplitude();
+//     console.log(amp);
+//   }
 
-  p.jumpSong = () => {
-    var len = song.duration();
-    song.jump(len / 2);
-  }
+//   p.jumpSong = () => {
+//     var len = song.duration();
+//     song.jump(len / 2);
+//   }
 
-  p.togglePlaying = () => {
-    !song.isPlaying()
-      ? song.play()
-      : song.stop()
-  }
+//   p.togglePlaying = () => {
+//     !song.isPlaying()
+//       ? song.play()
+//       : song.stop()
+//   }
 
-  p.loaded = () => {
-    sliderVol = p.createSlider(0, 1, 0.5, 0.01);
-    sliderRate = p.createSlider(0.1, 1.5, 1, 0.01);
-    sliderPan = p.createSlider(-1, 1, 0, 0.01);
-    button = p.createButton("PLAY/PAUSE");
-    button.mousePressed(p.togglePlaying);
-    jumpButton = p.createButton("jump");
-    jumpButton.mousePressed(p.jumpSong);
-  }
+//   p.loaded = () => {
+//     sliderVol = p.createSlider(0, 1, 0.5, 0.01);
+//     sliderRate = p.createSlider(0.1, 1.5, 1, 0.01);
+//     sliderPan = p.createSlider(-1, 1, 0, 0.01);
+//     button = p.createButton("PLAY/PAUSE");
+//     button.mousePressed(p.togglePlaying);
+//     jumpButton = p.createButton("jump");
+//     jumpButton.mousePressed(p.jumpSong);
+//   }
 
-  p.draw = () => { //Run in a loop
-    let colorAlg = song.currentTime() * 4 * 255 / song.duration();
-    let spinySpin = x / Math.PI * 0.02;
-    let sunX = width / 2;
-    let sunY = height / 2;
-    p.background(colorAlg, colorAlg, 0);
+//   p.draw = () => { //Run in a loop
+//     let colorAlg = song.currentTime() * 4 * 255 / song.duration();
+//     let spinySpin = x / Math.PI * 0.02;
+//     let sunX = width / 2;
+//     let sunY = height / 2;
+//     p.background(colorAlg, colorAlg, 0);
 
-    let vol = amp.getLevel();
-    for (var i = 0; i < 12; i++) {
-      var orbitX = width / 2 + Math.sin(spinySpin + i+1 * p.random(1)) * 350;
-      var orbitY = height / 2 + Math.cos(spinySpin + i * p.random(1)) * 350;
-      // var orbitX = width / 2 + Math.sin(spinySpin + i+1) * 350;
-      // var orbitY = height / 2 + Math.cos(spinySpin + i+1) * 350;
-      p.stroke(0);
-      p.line(sunX, sunY, orbitX, orbitY);
-      p.stroke(255);
-      p.fill(10 * p.random(i));
-      p.ellipse(orbitX, orbitY, vol * width / 12, vol * height / 12);
+//     let vol = amp.getLevel();
+//     for (var i = 0; i < 12; i++) {
+//       var orbitX = width / 2 + Math.sin(spinySpin + i+1 * p.random(1)) * 350;
+//       var orbitY = height / 2 + Math.cos(spinySpin + i * p.random(1)) * 350;
+//       // var orbitX = width / 2 + Math.sin(spinySpin + i+1) * 350;
+//       // var orbitY = height / 2 + Math.cos(spinySpin + i+1) * 350;
+//       p.stroke(0);
+//       p.line(sunX, sunY, orbitX, orbitY);
+//       p.stroke(255);
+//       p.fill(10 * p.random(i));
+//       p.ellipse(orbitX, orbitY, vol * width / 12, vol * height / 12);
 
-    }
-    p.fill(255);
-    p.ellipse(sunX, sunY, 20 + vol * width / 4, 20 + vol * height / 4);
-    song.setVolume(sliderVol.value());
-    song.pan(sliderPan.value());
-    song.rate(sliderRate.value());
+//     }
+//     p.fill(255);
+//     p.ellipse(sunX, sunY, 20 + vol * width / 4, 20 + vol * height / 4);
+//     song.setVolume(sliderVol.value());
+//     song.pan(sliderPan.value());
+//     song.rate(sliderRate.value());
 
-    x++;
-  }
-}
+//     x++;
+//   }
+// }
 
-var myp5 = new p5(songFunction);
+// var myp5 = new p5(songFunction);
 
-//----------------VISUALIZATION FUNCTION-----------------
+//----------------MIC FUNCTION-----------------
 
 // var audioFunc = (proc) => {
 //   var mic;
@@ -164,3 +164,60 @@ var myp5 = new p5(songFunction);
 // }
 
 // var myp5 = new p5(lerpFunc);
+
+//----------------VISUALIZATION FUNCTION-----------------
+
+var audioFunc = (proc) => {
+  var song;
+  var button;
+  let amp;
+  var width, height;
+  var volHistory = [];
+
+  proc.preload = () => {
+    song = proc.loadSound('Paradise.mp3');
+  }
+
+  proc.setup = () => {
+    width = window.innerWidth;
+    height = window.innerHeight - 100;
+    proc.createCanvas(width, height);
+    button = proc.createButton('toggle');
+    button.mousePressed(proc.toggleSong);
+    song.play();
+    amp = new p5.Amplitude();
+  }
+
+  proc.toggleSong = () => {
+    song.isPlaying()
+      ? song.pause()
+      : song.play()
+
+  }
+  proc.draw = () => {
+    song.setVolume(0.2);
+    proc.background(0);
+    var vol = amp.getLevel() * 3;
+    volHistory.push(vol);
+    proc.translate(0, -height/2);
+    proc.stroke(255);
+    proc.noFill();
+    proc.beginShape();
+    for (var i = 0; i < volHistory.length - 50; i++) {
+      var y = proc.map(volHistory[i], 0, 1, height, 0);
+      proc.vertex(i, y);
+    }
+    proc.endShape();
+    // proc.ellipse(window.innerWidth / 2, (window.innerHeight / 2), window.innerWidth, vol * 200);
+
+    if (volHistory.length > width) {
+      volHistory.splice(0, 1);
+    }
+
+    proc.stroke(255, 0, 0);
+    proc.line(volHistory.length -50, 0, volHistory.length -50, height);
+  }
+
+}
+
+var myp5 = new p5(audioFunc);
