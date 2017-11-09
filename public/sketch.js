@@ -167,15 +167,134 @@
 
 //----------------VISUALIZATION FUNCTION-----------------
 
+// var audioFunc = (proc) => {
+//   var song;
+//   var button;
+//   let amp;
+//   var width, height;
+//   var volHistory = [];
+
+//   proc.preload = () => {
+//     song = proc.loadSound('Paradise.mp3');
+//   }
+
+//   proc.setup = () => {
+//     width = window.innerWidth;
+//     height = window.innerHeight - 100;
+//     proc.createCanvas(width, height);
+//     button = proc.createButton('toggle');
+//     button.mousePressed(proc.toggleSong);
+//     song.play();
+//     amp = new p5.Amplitude();
+//   }
+
+//   proc.toggleSong = () => {
+//     song.isPlaying()
+//       ? song.pause()
+//       : song.play()
+
+//   }
+//   proc.draw = () => {
+//     song.setVolume(0.2);
+//     proc.background(0);
+//     var vol = amp.getLevel() * 3;
+//     volHistory.push(vol);
+//     proc.translate(0, -height/2 + current);
+//     proc.stroke(255);
+//     proc.noFill();
+//     proc.beginShape();
+//     for (var i = 0; i < volHistory.length - 50; i++) {
+//       var y = proc.map(volHistory[i], 0, 1, height, 0);
+//       proc.vertex(i, y);
+//     }
+//     proc.endShape();
+//     // proc.ellipse(window.innerWidth / 2, (window.innerHeight / 2), window.innerWidth, vol * 200);
+
+//     if (volHistory.length > width) {
+//       volHistory.splice(0, 1);
+//     }
+
+//     proc.stroke(255, 0, 0);
+//     proc.line(volHistory.length -50, 0, volHistory.length -50, height);
+//   }
+
+// }
+
+// var myp5 = new p5(audioFunc);
+
+//----------------VISUALIZATION FUNCTION 2-----------------
+
+// var audioFunc = (proc) => {
+//   var song;
+//   var button;
+//   let amp;
+//   var width, height;
+//   var volHistory = [];
+
+//   proc.preload = () => {
+//     song = proc.loadSound('Paradise.mp3');
+//   }
+
+//   proc.setup = () => {
+//     width = window.innerWidth;
+//     height = window.innerHeight - 100;
+//     proc.createCanvas(width, height);
+//     button = proc.createButton('toggle');
+//     button.mousePressed(proc.toggleSong);
+//     song.play();
+//     amp = new p5.Amplitude();
+//   }
+
+//   proc.toggleSong = () => {
+//     song.isPlaying()
+//       ? song.pause()
+//       : song.play()
+
+//   }
+//   proc.draw = () => {
+//     song.setVolume(0.2);
+//     proc.angleMode(proc.DEGREES);
+//     proc.background(0);
+//     var vol = amp.getLevel() * 3;
+//     volHistory.push(vol);
+//     proc.stroke(255);
+//     proc.noFill();
+
+//     proc.translate(width/2, height/2);
+//     proc.beginShape();
+//     for (var i = 0; i < 360; i++) {
+//       var r = proc.map(volHistory[i], 0, 1, 10, 100);
+//       var x = r * proc.cos(i);
+//       var y = r * proc.sin(i);
+//       proc.vertex(x, y);
+//     }
+//     proc.endShape();
+//     // proc.ellipse(window.innerWidth / 2, (window.innerHeight / 2), window.innerWidth, vol * 200);
+
+//     if (volHistory.length > 360) {
+//       volHistory.splice(0, 1);
+//     }
+
+//   }
+
+// }
+
+// var myp5 = new p5(audioFunc);
+
+//----------------FREQUENCY FUNCTION-----------------
+
 var audioFunc = (proc) => {
   var song;
   var button;
-  let amp;
+  let fft;
   var width, height;
   var volHistory = [];
+  var w;
 
   proc.preload = () => {
+    // song = proc.loadSound('song.mp3');
     song = proc.loadSound('Paradise.mp3');
+    // song = proc.loadSound('Gooey.mp3');
   }
 
   proc.setup = () => {
@@ -185,7 +304,10 @@ var audioFunc = (proc) => {
     button = proc.createButton('toggle');
     button.mousePressed(proc.toggleSong);
     song.play();
-    amp = new p5.Amplitude();
+    // song.jump(proc.random(song.duration()))
+    fft = new p5.FFT(0.9, 64);
+    w = width / 64;
+    proc.colorMode(proc.HSB);
   }
 
   proc.toggleSong = () => {
@@ -196,26 +318,43 @@ var audioFunc = (proc) => {
   }
   proc.draw = () => {
     song.setVolume(0.2);
+    proc.angleMode(proc.DEGREES);
     proc.background(0);
-    var vol = amp.getLevel() * 3;
-    volHistory.push(vol);
-    proc.translate(0, -height/2);
+    var spectrum = fft.analyze();
+    console.log(spectrum);
+    // volHistory.push(vol);
+    beginShape();
+    for (var i = 0; i < spectrum.length; i++) {
+      var angle = proc.map(i, 0, spectrum.length, 0, 360);
+      var amp = spectrum[i];
+      var r = map(amp, 0, 256, 40, 200);
+      var x = r * cos(angle);
+      var y = r * sin(angle);
+      proc.fill(i, 255, 255);
+      proc.noStroke();
+      proc.vertex(x, y)
+      // var y = proc.map(amp, 0, 255, height, 0);
+      // proc.rect(i * w, y, w - 2, height - y);
+    }
+    endShape();
     proc.stroke(255);
     proc.noFill();
-    proc.beginShape();
-    for (var i = 0; i < volHistory.length - 50; i++) {
-      var y = proc.map(volHistory[i], 0, 1, height, 0);
-      proc.vertex(i, y);
-    }
-    proc.endShape();
+
+    proc.translate(width/2, height/2);
+    // proc.beginShape();
+    // for (var i = 0; i < 360; i++) {
+    //   var r = proc.map(volHistory[i], 0, 1, 10, 100);
+    //   var x = r * proc.cos(i);
+    //   var y = r * proc.sin(i);
+    //   proc.vertex(x, y);
+    // }
+    // proc.endShape();
     // proc.ellipse(window.innerWidth / 2, (window.innerHeight / 2), window.innerWidth, vol * 200);
 
-    if (volHistory.length > width) {
+    if (volHistory.length > 360) {
       volHistory.splice(0, 1);
     }
 
-    proc.stroke(255, 0, 0);
-    proc.line(volHistory.length -50, 0, volHistory.length -50, height);
   }
 
 }
