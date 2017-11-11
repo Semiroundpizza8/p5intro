@@ -380,6 +380,7 @@
 //       width = p.windowWidth;
 //       height = p.windowHeight;
 //       p.createCanvas(width, height);
+//       // song = p.loadSound('Feel.mp3', p.loaded());
 //       song = p.loadSound('Gooey.mp3', p.loaded());
 //       // song = p.loadSound('Paradise.mp3', p.loaded());
 //       // song = p.loadSound('song.mp3', p.loaded());
@@ -776,11 +777,215 @@
 
 // var myp5 = new p5(s);
 
+// ----------------AGENT PAINT 1 FUNCTION-----------------
+// var s = function (p) {
 
+//   var width = window.innerWidth;
+//   var height = window.innerHeight;
+//   var Jims = [];
+
+//   p.setup = function () { //Run once
+//     p.createCanvas(width, height);
+//     for (var i = 0; i < 1; i++) {
+//       Jims.push(new Polly(p.random(width), p.random(height)))
+//     }
+//   }
+
+//   p.draw = function () { //Run in a loop
+//     // p.background(255);
+
+//     let mouse = p.createVector(p.mouseX, p.mouseY);
+
+//     p.fill(200);
+//     p.stroke(p.random(50) + 150, p.random(50) + 150, p.random(50) + 150, 80);
+//     p.strokeWeight(2);
+//     // p.ellipse(mouse.x, mouse.y, 48, 48);
+//     Jims.forEach(Jim => {
+//       if (p.mouseIsPressed) {
+//         p.line(Jim.location.x, Jim.location.y, p.mouseX, p.mouseY);
+//       }
+//       Jim.seek(mouse);
+//       Jim.update();
+//       Jim.display();
+//     })
+//   }
+
+
+//   function Polly(x, y) {
+//     this.acceleration = p.createVector(0, 0);
+//     this.velocity = p.createVector(0, -2);
+//     this.location = p.createVector(x, y);
+//     this.r = 6;
+//     this.maxSpeed = 4;
+//     this.maxForce = 0.1;
+
+//     this.update = function () {
+//       // Manipulate Velocity
+//       this.velocity.add(this.acceleration);
+//       this.velocity.limit(this.maxSpeed);
+//       // Update location using new velocity
+//       this.location.add(this.velocity);
+//       // Resets to 0 after update ends
+//       this.acceleration.mult(0);
+//     }
+
+//     this.applyForce = function (force) {
+//       // Adds force to the object
+//       this.acceleration.add(force);
+//     }
+
+//     this.seek = function (target) {
+//       // Idk wtf this is or if it works but we gon' find out
+//       let desired = p5.Vector.sub(target, this.location);
+
+//       // Normalizes it to max speed
+//       desired.normalize();
+//       desired.mult(this.maxSpeed);
+
+//       var steer = p5.Vector.sub(desired, this.velocity);
+//       steer.limit(this.maxforce);
+
+//       this.applyForce(steer);
+//     }
+
+//     this.display = function () {
+//       var feta = this.velocity.heading() + p.PI / 2;
+//       p.fill(255, 200, 100);
+//       p.stroke(0);
+//       p.strokeWeight(1);
+//       p.push();
+//       p.translate(this.location.x, this.location.y);
+//       p.rotate(feta);
+//       // p.beginShape();
+//       // p.vertex(0, -this.r * 2);
+//       // p.vertex(-this.r, this.r * 2);
+//       // p.vertex(this.r, this.r * 2);
+//       // p.endShape(p.CLOSE);
+//       p.pop();
+
+//     }
+//   }
+// }
+
+// var myp5 = new p5(s);
 
 // ----------------STEERING FUNCTION-----------------
+// var s = function (p) {
+
+//   var colors = [
+//     "#7B2A3B",
+//     "#E57661",
+//     "#F8C58C",
+//     "#F8E7A2",
+//     "#86DDB2"
+//   ]
+//   var width = window.innerWidth;
+//   var height = window.innerHeight;
+//   var Jims = [];
+
+//   p.setup = function () { //Run once
+//     p.createCanvas(width, height);
+//     for (var i = 0; i < 2; i++) {
+//       Jims.push(new Polly(p.random(width), p.random(height)))
+//     }
+//   }
+
+//   p.draw = function () { //Run in a loop
+//     // p.background(255);
+
+//     let mouse = p.createVector(p.mouseX, p.mouseY);
+
+//     p.fill(200);
+//     p.stroke(p.random(50) + 150, p.random(50) + 150, p.random(50) + 150, 80);
+//     p.strokeWeight(2);
+//     // p.ellipse(mouse.x, mouse.y, 48, 48);
+//     if (!p.mouseIsPressed) {
+//       p.line(Jims[0].location.x, Jims[0].location.y, Jims[1].location.x, Jims[1].location.y);
+//     }
+//     Jims.forEach(Jim => {
+//       //   if (p.mouseIsPressed) {
+//       //     p.line(Jim.location.x, Jim.location.y, p.mouseX, p.mouseY);
+//       //   }
+//       if (p.mouseIsPressed) {
+//         Jim.location.x = p.random(width);
+//         Jim.location.y = p.random(height);
+//       }
+//       Jim.seek(mouse);
+//       Jim.update();
+//       Jim.display();
+//     })
+//   }
+
+
+//   function Polly(x, y) {
+//     this.acceleration = p.createVector(0, 0);
+//     this.velocity = p.createVector(0, -2);
+//     this.location = p.createVector(x, y);
+//     this.r = 6;
+//     this.maxSpeed = 4;
+//     this.maxForce = 0.1;
+
+//     this.update = function () {
+//       // Manipulate Velocity
+//       this.velocity.add(this.acceleration);
+//       this.velocity.limit(this.maxSpeed);
+//       // Update location using new velocity
+//       this.location.add(this.velocity);
+//       // Resets to 0 after update ends
+//       this.acceleration.mult(0);
+//     }
+
+//     this.applyForce = function (force) {
+//       // Adds force to the object
+//       this.acceleration.add(force);
+//     }
+
+//     this.seek = function (target) {
+//       // Idk wtf this is or if it works but we gon' find out
+//       let desired = p5.Vector.sub(target, this.location);
+
+//       // Normalizes it to max speed
+//       desired.normalize();
+//       desired.mult(this.maxSpeed);
+
+//       var steer = p5.Vector.sub(desired, this.velocity);
+//       steer.limit(this.maxforce);
+
+//       this.applyForce(steer);
+//     }
+
+//     this.display = function () {
+//       // var feta = this.velocity.heading() + p.PI / 2;
+//       // p.strokeWeight(1);
+//       // p.stroke(0);
+//       // p.fill(colors[Math.floor(Math.random() * 5)]);
+//       // p.ellipse(this.location.x, this.location.y, 10, 10);
+//       // p.push();
+//       // p.translate(this.location.x, this.location.y);
+//       // p.rotate(feta);
+
+//       // p.beginShape();
+//       // p.vertex(0, -this.r * 2);
+//       // p.vertex(-this.r, this.r * 2);
+//       // p.vertex(this.r, this.r * 2);
+//       // p.endShape(p.CLOSE);
+//       p.pop();
+
+//     }
+//   }
+// }
+
+// var myp5 = new p5(s);
+
 var s = function (p) {
 
+  var colors = [
+    "#7B2A3B",
+    "#E57661",
+    "#F8C58C",
+    "#F8E7A2",
+    "#86DDB2"
+  ]
   var width = window.innerWidth;
   var height = window.innerHeight;
   var Jims = [];
@@ -788,22 +993,25 @@ var s = function (p) {
   p.setup = function () { //Run once
     p.createCanvas(width, height);
     for (var i = 0; i < 1; i++) {
-      Jims.push(new Polly(p.random(width), p.random(height)))
+      Jims.push(new Polly(width / 2, height / 2))
     }
   }
 
   p.draw = function () { //Run in a loop
-    // p.background(255);
+    p.background(255);
 
     let mouse = p.createVector(p.mouseX, p.mouseY);
-
+    // Draw a circle at mouse
     p.fill(200);
-    p.stroke(p.random(50) + 150, p.random(50) + 150, p.random(50) + 150, 80);
+    p.stroke(0);
     p.strokeWeight(2);
-    // p.ellipse(mouse.x, mouse.y, 48, 48);
+    p.ellipse(mouse.x, mouse.y, 48, 48);
+
+    // Steer agents
     Jims.forEach(Jim => {
       if (p.mouseIsPressed) {
-        p.line(Jim.location.x, Jim.location.y, p.mouseX, p.mouseY);
+        Jim.location.x = p.random(width);
+        Jim.location.y = p.random(height);
       }
       Jim.seek(mouse);
       Jim.update();
@@ -813,9 +1021,10 @@ var s = function (p) {
 
 
   function Polly(x, y) {
-    this.acceleration = p.createVector(0, 0);
-    this.velocity = p.createVector(0, -2);
     this.location = p.createVector(x, y);
+    this.velocity = p.createVector(0, 0);
+    this.acceleration = p.createVector(0, 0);
+    
     this.r = 6;
     this.maxSpeed = 4;
     this.maxForce = 0.1;
@@ -838,30 +1047,35 @@ var s = function (p) {
     this.seek = function (target) {
       // Idk wtf this is or if it works but we gon' find out
       let desired = p5.Vector.sub(target, this.location);
+      let d = desired.mag();
 
-      // Normalizes it to max speed
-      desired.normalize();
-      desired.mult(this.maxSpeed);
+      if (d < 100) {
+        let m = p.map(d, 0, 100, 0, this.maxSpeed);
+        desired.setMag(m);
+      } else {
+        desired.setMag(this.maxSpeed);
+      }
 
       var steer = p5.Vector.sub(desired, this.velocity);
       steer.limit(this.maxforce);
-
       this.applyForce(steer);
     }
 
     this.display = function () {
       var feta = this.velocity.heading() + p.PI / 2;
-      p.fill(255, 200, 100);
-      p.stroke(0);
       p.strokeWeight(1);
+      p.stroke(0);
+      p.fill(66);
+
       p.push();
       p.translate(this.location.x, this.location.y);
       p.rotate(feta);
-      // p.beginShape();
-      // p.vertex(0, -this.r * 2);
-      // p.vertex(-this.r, this.r * 2);
-      // p.vertex(this.r, this.r * 2);
-      // p.endShape(p.CLOSE);
+
+      p.beginShape();
+      p.vertex(0, -this.r * 2);
+      p.vertex(-this.r, this.r * 2);
+      p.vertex(this.r, this.r * 2);
+      p.endShape(p.CLOSE);
       p.pop();
 
     }
@@ -869,5 +1083,4 @@ var s = function (p) {
 }
 
 var myp5 = new p5(s);
-
 
