@@ -379,8 +379,9 @@ var songFunction = function (p) {
     p.createCanvas(width, height);
     // song = p.loadSound('Gooey.mp3', p.loaded());
     // song = p.loadSound('Paradise.mp3', p.loaded());
-    // p.colorMode(p.HSB, 255);
-    song = p.loadSound('song.mp3', p.loaded());
+    p.colorMode(p.HSB, 255);
+    // song = p.loadSound('song.mp3', p.loaded());
+    song = p.loadSound('Flori.mp3', p.loaded());
     amp = new p5.Amplitude();
     console.log(amp);
   }
@@ -415,11 +416,11 @@ var songFunction = function (p) {
 
     let vol = amp.getLevel();
     for (var i = 0; i < 12; i++) {
-      // var orbitX = width / 2 + Math.sin(spinySpin + i+1 * p.random(1)) * 350;
-      // var orbitY = height / 2 + Math.cos(spinySpin + i * p.random(1)) * 350;
-      var orbitX = width / 2 + Math.sin(spinySpin + i+1) * 350;
-      var orbitY = height / 2 + Math.cos(spinySpin + i+1) * 350;
-      p.stroke('#');
+      var orbitX = width / 2 + Math.sin(spinySpin + i+1 * p.random(1)) * 350;
+      var orbitY = height / 2 + Math.cos(spinySpin + i * p.random(1)) * 350;
+      // var orbitX = width / 2 + Math.sin(spinySpin + i+1) * 350;
+      // var orbitY = height / 2 + Math.cos(spinySpin + i+1) * 350;
+      p.stroke(255);
       p.line(sunX, sunY, orbitX, orbitY);
       p.stroke(255);
       // p.fill(50, 10 + vol, 100);
@@ -429,7 +430,8 @@ var songFunction = function (p) {
     }
     // p.fill('#FFEFBF');
     console.log(vol)
-    p.fill(250, 230, 40 + vol*750);
+    p.fill((vol*500)%255, 240, 240 );
+    // p.fill(150 - vol*750, 230 - vol*500, 250 - vol*1000);
     p.ellipse(sunX, sunY, 20 + vol * 3 * width, 20 + vol * 3 * height);
     song.setVolume(sliderVol.value());
     song.pan(sliderPan.value());
