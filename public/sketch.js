@@ -341,11 +341,11 @@
 //       var orbitY = height / 2 + Math.cos(spinySpin + i * p.random(1)) * 350;
 //       // var orbitX = width / 2 + Math.sin(spinySpin + i+1) * 350;
 //       // var orbitY = height / 2 + Math.cos(spinySpin + i+1) * 350;
-//       p.stroke(0);
+//       p.stroke(20);
 //       p.line(sunX, sunY, orbitX, orbitY);
 //       p.stroke(255);
 //       p.fill(10 * p.random(i));
-//       p.ellipse(orbitX, orbitY, (vol/1.5) * width / 16, (vol/1.5) * height / 16);
+//       p.ellipse(orbitX, orbitY, (vol/2) * width / 16, (vol/2) * height / 16);
 
 //     }
 //     p.fill(255);
@@ -359,6 +359,87 @@
 // }
 
 // var myp5 = new p5(songFunction);
+
+var songFunction = function (p) {
+
+  var song;
+  var sliderVol;
+  var sliderRate;
+  var sliderPan;
+  var button;
+  var jumpButton;
+  var amp;
+  var width;
+  var height;
+  var x = 0;
+
+  p.setup = () => { //Run once
+    width = window.innerWidth;
+    height = window.innerWidth;
+    p.createCanvas(width, height);
+    // song = p.loadSound('Gooey.mp3', p.loaded());
+    // song = p.loadSound('Paradise.mp3', p.loaded());
+    // p.colorMode(p.HSB, 255);
+    song = p.loadSound('song.mp3', p.loaded());
+    amp = new p5.Amplitude();
+    console.log(amp);
+  }
+
+  p.jumpSong = () => {
+    var len = song.duration();
+    song.jump(len / 2);
+  }
+
+  p.togglePlaying = () => {
+    !song.isPlaying()
+      ? song.play()
+      : song.stop()
+  }
+
+  p.loaded = () => {
+    sliderVol = p.createSlider(0, 1, 0.5, 0.01);
+    sliderRate = p.createSlider(0.1, 1.5, 1, 0.01);
+    sliderPan = p.createSlider(-1, 1, 0, 0.01);
+    button = p.createButton("PLAY/PAUSE");
+    button.mousePressed(p.togglePlaying);
+    jumpButton = p.createButton("jump");
+    jumpButton.mousePressed(p.jumpSong);
+  }
+
+  p.draw = () => { //Run in a loop
+    let colorAlg = song.currentTime() * 4 * 255 / song.duration();
+    let spinySpin = x / Math.PI * 0.02;
+    let sunX = width / 2;
+    let sunY = height / 2;
+    // p.background(colorAlg, colorAlg, 0);
+
+    let vol = amp.getLevel();
+    for (var i = 0; i < 12; i++) {
+      // var orbitX = width / 2 + Math.sin(spinySpin + i+1 * p.random(1)) * 350;
+      // var orbitY = height / 2 + Math.cos(spinySpin + i * p.random(1)) * 350;
+      var orbitX = width / 2 + Math.sin(spinySpin + i+1) * 350;
+      var orbitY = height / 2 + Math.cos(spinySpin + i+1) * 350;
+      p.stroke('#');
+      p.line(sunX, sunY, orbitX, orbitY);
+      p.stroke(255);
+      // p.fill(50, 10 + vol, 100);
+      p.fill("#E5A173");
+      // p.ellipse(orbitX, orbitY, (vol/2) * width / 16, (vol/2) * height / 16);
+
+    }
+    // p.fill('#FFEFBF');
+    console.log(vol)
+    p.fill(250, 230, 40 + vol*750);
+    p.ellipse(sunX, sunY, 20 + vol * 3 * width, 20 + vol * 3 * height);
+    song.setVolume(sliderVol.value());
+    song.pan(sliderPan.value());
+    song.rate(sliderRate.value());
+
+    x++;
+  }
+}
+
+var myp5 = new p5(songFunction);
 
 
 //----------------RE//SONG FUNCTION-----------------
@@ -977,110 +1058,238 @@
 
 // var myp5 = new p5(s);
 
-var s = function (p) {
+// var s = function (p) {
 
-  var colors = [
-    "#7B2A3B",
-    "#E57661",
-    "#F8C58C",
-    "#F8E7A2",
-    "#86DDB2"
-  ]
-  var width = window.innerWidth;
-  var height = window.innerHeight;
-  var Jims = [];
+//   var colors = [
+//     "#7B2A3B",
+//     "#E57661",
+//     "#F8C58C",
+//     "#F8E7A2",
+//     "#86DDB2"
+//   ]
+//   var width = window.innerWidth;
+//   var height = window.innerHeight;
+//   var Jims = [];
 
-  p.setup = function () { //Run once
-    p.createCanvas(width, height);
-    for (var i = 0; i < 1; i++) {
-      Jims.push(new Polly(width / 2, height / 2))
-    }
-  }
+//   p.setup = function () { //Run once
+//     p.createCanvas(width, height);
+//     for (var i = 0; i < 1; i++) {
+//       Jims.push(new Polly(width / 2, height / 2))
+//     }
+//   }
 
-  p.draw = function () { //Run in a loop
-    p.background(255);
+//   p.draw = function () { //Run in a loop
+//     p.background(255);
 
-    let mouse = p.createVector(p.mouseX, p.mouseY);
-    // Draw a circle at mouse
-    p.fill(200);
-    p.stroke(0);
-    p.strokeWeight(2);
-    p.ellipse(mouse.x, mouse.y, 48, 48);
+//     let mouse = p.createVector(p.mouseX, p.mouseY);
+//     // Draw a circle at mouse
+//     p.fill(200);
+//     p.stroke(0);
+//     p.strokeWeight(2);
+//     p.ellipse(mouse.x, mouse.y, 48, 48);
 
-    // Steer agents
-    Jims.forEach(Jim => {
-      if (p.mouseIsPressed) {
-        Jim.location.x = p.random(width);
-        Jim.location.y = p.random(height);
-      }
-      Jim.seek(mouse);
-      Jim.update();
-      Jim.display();
-    })
-  }
+//     // Steer agents
+//     Jims.forEach(Jim => {
+//       if (p.mouseIsPressed) {
+//         Jim.location.x = p.random(width);
+//         Jim.location.y = p.random(height);
+//       }
+//       Jim.seek(mouse);
+//       Jim.update();
+//       Jim.display();
+//     })
+//   }
 
 
-  function Polly(x, y) {
-    this.location = p.createVector(x, y);
-    this.velocity = p.createVector(0, 0);
-    this.acceleration = p.createVector(0, 0);
-    
-    this.r = 6;
-    this.maxSpeed = 4;
-    this.maxForce = 0.1;
+//   function Polly(x, y) {
+//     this.location = p.createVector(x, y);
+//     this.velocity = p.createVector(0, 0);
+//     this.acceleration = p.createVector(0, 0);
 
-    this.update = function () {
-      // Manipulate Velocity
-      this.velocity.add(this.acceleration);
-      this.velocity.limit(this.maxSpeed);
-      // Update location using new velocity
-      this.location.add(this.velocity);
-      // Resets to 0 after update ends
-      this.acceleration.mult(0);
-    }
+//     this.r = 6;
+//     this.maxSpeed = 4;
+//     this.maxForce = 0.1;
 
-    this.applyForce = function (force) {
-      // Adds force to the object
-      this.acceleration.add(force);
-    }
+//     this.update = function () {
+//       // Manipulate Velocity
+//       this.velocity.add(this.acceleration);
+//       this.velocity.limit(this.maxSpeed);
+//       // Update location using new velocity
+//       this.location.add(this.velocity);
+//       // Resets to 0 after update ends
+//       this.acceleration.mult(0);
+//     }
 
-    this.seek = function (target) {
-      // Idk wtf this is or if it works but we gon' find out
-      let desired = p5.Vector.sub(target, this.location);
-      let d = desired.mag();
+//     this.applyForce = function (force) {
+//       // Adds force to the object
+//       this.acceleration.add(force);
+//     }
 
-      if (d < 100) {
-        let m = p.map(d, 0, 100, 0, this.maxSpeed);
-        desired.setMag(m);
-      } else {
-        desired.setMag(this.maxSpeed);
-      }
+//     this.seek = function (target) {
+//       // Idk wtf this is or if it works but we gon' find out
+//       let desired = p5.Vector.sub(target, this.location);
+//       let d = desired.mag();
 
-      var steer = p5.Vector.sub(desired, this.velocity);
-      steer.limit(this.maxforce);
-      this.applyForce(steer);
-    }
+//       if (d < 100) {
+//         let m = p.map(d, 0, 100, 0, this.maxSpeed);
+//         desired.setMag(m);
+//       } else {
+//         desired.setMag(this.maxSpeed);
+//       }
 
-    this.display = function () {
-      var feta = this.velocity.heading() + p.PI / 2;
-      p.strokeWeight(1);
-      p.stroke(0);
-      p.fill(66);
+//       var steer = p5.Vector.sub(desired, this.velocity);
+//       steer.limit(this.maxforce);
+//       this.applyForce(steer);
+//     }
 
-      p.push();
-      p.translate(this.location.x, this.location.y);
-      p.rotate(feta);
+//     this.display = function () {
+//       var feta = this.velocity.heading() + p.PI / 2;
+//       p.strokeWeight(1);
+//       p.stroke(0);
+//       p.fill(66);
 
-      p.beginShape();
-      p.vertex(0, -this.r * 2);
-      p.vertex(-this.r, this.r * 2);
-      p.vertex(this.r, this.r * 2);
-      p.endShape(p.CLOSE);
-      p.pop();
+//       p.push();
+//       p.translate(this.location.x, this.location.y);
+//       p.rotate(feta);
 
-    }
-  }
-}
+//       p.beginShape();
+//       p.vertex(0, -this.r * 2);
+//       p.vertex(-this.r, this.r * 2);
+//       p.vertex(this.r, this.r * 2);
+//       p.endShape(p.CLOSE);
+//       p.pop();
 
-var myp5 = new p5(s);
+//     }
+//   }
+// }
+
+// var myp5 = new p5(s);
+
+// //----------------- Flow Field ------------------------
+
+// var s = function (p) {
+
+//   var colors = [
+//     "#7B2A3B",
+//     "#E57661",
+//     "#F8C58C",
+//     "#F8E7A2",
+//     "#86DDB2"
+//   ]
+//   var width = window.innerWidth;
+//   var height = window.innerHeight;
+//   var Jims = [];
+
+//   p.setup = function () { //Run once
+//     p.createCanvas(width, height);
+//     for (var i = 0; i < 1; i++) {
+//       Jims.push(new Polly(width / 2, height / 2))
+//     }
+//   }
+
+//   p.draw = function () { //Run in a loop
+//     p.background(255);
+
+//     let mouse = p.createVector(p.mouseX, p.mouseY);
+//     // Draw a circle at mouse
+//     p.fill(200);
+//     p.stroke(0);
+//     p.strokeWeight(2);
+//     p.ellipse(mouse.x, mouse.y, 48, 48);
+
+//     // Steer agents
+//     Jims.forEach(Jim => {
+//       if (p.mouseIsPressed) {
+//         Jim.location.x = p.random(width);
+//         Jim.location.y = p.random(height);
+//       }
+//       Jim.seek(mouse);
+//       Jim.update();
+//       Jim.display();
+//     })
+//   }
+
+
+//   function Polly(x, y) {
+//     this.location = p.createVector(x, y);
+//     this.velocity = p.createVector(0, 0);
+//     this.acceleration = p.createVector(0, 0);
+
+//     this.r = 6;
+//     this.maxSpeed = 4;
+//     this.maxForce = 0.1;
+
+//     this.update = function () {
+//       // Manipulate Velocity
+//       this.velocity.add(this.acceleration);
+//       this.velocity.limit(this.maxSpeed);
+//       // Update location using new velocity
+//       this.location.add(this.velocity);
+//       // Resets to 0 after update ends
+//       this.acceleration.mult(0);
+//     }
+
+//     this.applyForce = function (force) {
+//       // Adds force to the object
+//       this.acceleration.add(force);
+//     }
+
+//     this.seek = function (target) {
+//       // Idk wtf this is or if it works but we gon' find out
+//       let desired = p5.Vector.sub(target, this.location);
+//       let d = desired.mag();
+
+//       if (d < 100) {
+//         let m = p.map(d, 0, 100, 0, this.maxSpeed);
+//         desired.setMag(m);
+//       } else {
+//         desired.setMag(this.maxSpeed);
+//       }
+
+//       var steer = p5.Vector.sub(desired, this.velocity);
+//       steer.limit(this.maxforce);
+//       this.applyForce(steer);
+//     }
+
+//     this.display = function () {
+//       var feta = this.velocity.heading() + p.PI / 2;
+//       p.strokeWeight(1);
+//       p.stroke(0);
+//       p.fill(66);
+
+//       p.push();
+//       p.translate(this.location.x, this.location.y);
+//       p.rotate(feta);
+
+//       p.beginShape();
+//       p.vertex(0, -this.r * 2);
+//       p.vertex(-this.r, this.r * 2);
+//       p.vertex(this.r, this.r * 2);
+//       p.endShape(p.CLOSE);
+//       p.pop();
+
+//     }
+//   }
+
+//   function FlowField(r) {
+//     // Flowfield is a 2D array of vectors
+//     this.field = [[]];
+//     // How large each cell in FlowField should be
+//     this.resolution = r;
+//     // Col and Rows in FlowField
+//     this.cols = width / this.resolution;
+//     this.rows = height / this.resolution;
+
+//     this.init = function () {
+//       for (var i = 0; i < this.cols; i++) {
+//         for (var j = 0; j < this.rows; j++) {
+//           let feta = p.random(-p.PI / 4, p.PI / 4);
+//           this.field[i][j] = p5.Vector.fromAngle(feta);
+//         }
+//       }
+//     }
+//   }
+// }
+
+// var myp5 = new p5(s);
 
